@@ -1,4 +1,10 @@
 #include "systemcalls.h"
+#include <fcntl.h>
+
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 /**
  * @param cmd the command to execute with system()
@@ -16,8 +22,13 @@ bool do_system(const char *cmd)
  *   and return a boolean true if the system() call completed with success
  *   or false() if it returned a failure
 */
+    int x = system(cmd);
 
-    return true;
+    if (x == 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -59,6 +70,38 @@ bool do_exec(int count, ...)
  *
 */
 
+    /* https://www.geeksforgeeks.org/c/wait-system-call-c/ Reference */
+
+    /* Creates a parent and child process */
+    pid_t pid;
+    pid = fork(); /* Forks the current process */
+
+    if (pid < 0) {
+        /* Error so do_exec actually failed so return false*/
+        return false;
+    }
+    else if (pid == 0){
+        /* Child process */
+        execv(command[0], command);
+        /*abort(); only happens if execv fails */
+        _exit(EXIT_FAILURE); /* Exit child process if execv fails */
+        return false;
+    }
+    else {
+        /* Parent process */
+
+        /* Gets the status of the child process and stores it in int. */
+        int stat;
+        wait(&stat);
+
+        /*printf("HERE: %d", stat);*/
+
+        /* If child process failed then return false*/
+        if (WEXITSTATUS(stat) == EXIT_FAILURE){
+            return false;
+        }
+    }
+
     va_end(args);
 
     return true;
@@ -92,6 +135,34 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
  *   The rest of the behaviour is same as do_exec()
  *
 */
+
+    /* Returns file descriptor int to be able to refer to outputfile as */
+    int fd = open(outputfile, O_WRONLY|O_TRUNC|O_CREAT, 0644);
+    if (fd < 0) { 
+        return false;
+    }
+
+    /* Creates a parent and child process */
+    pid_t pid;
+    pid = fork(); /* Forks the current process */
+
+    if (pid < 0) {
+        /* Error so do_exec actually failed so return false*/
+        close(fd);
+        return false;
+    }
+    else if (pid == 0){
+        /* Child process */
+        if (dup2(fd, 1) < 0) { return false; }
+        close(fd);
+        execv(command[0], command);
+        /*abort(); only happens if execv fails */
+    }
+    else {
+        /* Parent process */
+        close(fd);
+        wait(NULL);
+    }
 
     va_end(args);
 
