@@ -94,7 +94,7 @@ bool do_exec(int count, ...)
         int stat;
         wait(&stat);
 
-        /*printf("HERE: %d", stat);*/
+        /*printf("HERE: %d", stat); */
 
         /* If child process failed then return false*/
         if (WEXITSTATUS(stat) == EXIT_FAILURE){
