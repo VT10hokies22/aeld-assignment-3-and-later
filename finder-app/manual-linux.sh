@@ -150,10 +150,11 @@ cp ${FINDER_APP_DIR}/writer.sh ${OUTDIR}/rootfs/home
 #pwd
 #ls
 
-# TODO: Chown the root directory
-cd "$OUTDIR/rootfs"
-find . | cpio -H newc -ov --owner root:root > ${OUTDIR}/initramfs.cpio
+# TODO: Chown the root directory. -R all dudirectories and files too
+sudo chown -R root:root "${OUTDIR}/rootfs"
 
 # TODO: Create initramfs.cpio.gz
-cd $OUTDIR
+cd "${OUTDIR}/rootfs"
+find . | cpio -H newc -ov --owner root:root > ${OUTDIR}/initramfs.cpio
+cd ${OUTDIR}
 gzip -f initramfs.cpio
