@@ -143,8 +143,6 @@ cp ${FINDER_APP_DIR}/conf/username.txt ${OUTDIR}/rootfs/home/conf
 cp ${FINDER_APP_DIR}/conf/assignment.txt ${OUTDIR}/rootfs/home/conf
 cp ${FINDER_APP_DIR}/finder-test.sh ${OUTDIR}/rootfs/home
 cp ${FINDER_APP_DIR}/autorun-qemu.sh ${OUTDIR}/rootfs/home
-cp ${FINDER_APP_DIR}/writer.c ${OUTDIR}/rootfs/home
-cp ${FINDER_APP_DIR}/writer.sh ${OUTDIR}/rootfs/home
 
 #echo here
 #pwd
