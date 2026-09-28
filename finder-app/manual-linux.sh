@@ -53,6 +53,10 @@ echo "Adding the Image in outdir"
 
 echo "Creating the staging directory for the root filesystem"
 cd "$OUTDIR"
+
+cp linux-stable/arch/arm64/boot/Image ${OUTDIR}/Image
+
+
 if [ -d "${OUTDIR}/rootfs" ]
 then
 	echo "Deleting rootfs directory at ${OUTDIR}/rootfs and starting over"
@@ -128,19 +132,19 @@ sudo mknod -m 666 ${OUTDIR}/rootfs/dev/console c 5 1
 ls
 pwd
 cd ${OUTDIR}/rootfs/home
-make -C ~/gitfold/aeld-assignment-1/finder-app clean
-make -C ~/gitfold/aeld-assignment-1/finder-app CROSS_COMPILE=${CROSS_COMPILE}
-cp ~/gitfold/aeld-assignment-1/finder-app/writer ${OUTDIR}/rootfs/home
+make -C ${FINDER_APP_DIR} clean
+make -C ${FINDER_APP_DIR} CROSS_COMPILE=${CROSS_COMPILE}
+cp ${FINDER_APP_DIR}/writer ${OUTDIR}/rootfs/home
 
 # TODO: Copy the finder related scripts and executables to the /home directory
 # on the target rootfs
-cp ~/gitfold/aeld-assignment-1/finder-app/finder.sh ${OUTDIR}/rootfs/home
-cp ~/gitfold/aeld-assignment-1/finder-app/conf/username.txt ${OUTDIR}/rootfs/home/conf
-cp ~/gitfold/aeld-assignment-1/finder-app/conf/assignment.txt ${OUTDIR}/rootfs/home/conf
-cp ~/gitfold/aeld-assignment-1/finder-app/finder-test.sh ${OUTDIR}/rootfs/home
-cp ~/gitfold/aeld-assignment-1/finder-app/autorun-qemu.sh ${OUTDIR}/rootfs/home
-cp ~/gitfold/aeld-assignment-1/finder-app/writer.c ${OUTDIR}/rootfs/home
-cp ~/gitfold/aeld-assignment-1/finder-app/writer.sh ${OUTDIR}/rootfs/home
+cp ${FINDER_APP_DIR}/finder.sh ${OUTDIR}/rootfs/home
+cp ${FINDER_APP_DIR}/conf/username.txt ${OUTDIR}/rootfs/home/conf
+cp ${FINDER_APP_DIR}/conf/assignment.txt ${OUTDIR}/rootfs/home/conf
+cp ${FINDER_APP_DIR}/finder-test.sh ${OUTDIR}/rootfs/home
+cp ${FINDER_APP_DIR}/autorun-qemu.sh ${OUTDIR}/rootfs/home
+cp ${FINDER_APP_DIR}/writer.c ${OUTDIR}/rootfs/home
+cp ${FINDER_APP_DIR}/writer.sh ${OUTDIR}/rootfs/home
 
 #echo here
 #pwd
@@ -153,5 +157,3 @@ find . | cpio -H newc -ov --owner root:root > ${OUTDIR}/initramfs.cpio
 # TODO: Create initramfs.cpio.gz
 cd $OUTDIR
 gzip -f initramfs.cpio
-
-cp linux-stable/arch/arm64/boot/Image ${OUTDIR}/Image
