@@ -132,6 +132,8 @@ sudo mknod -m 666 ${OUTDIR}/rootfs/dev/console c 5 1
 ls
 pwd
 cd ${OUTDIR}/rootfs/home
+cp ${FINDER_APP_DIR}/writer.c ${OUTDIR}/rootfs/home
+cp ${FINDER_APP_DIR}/writer.sh ${OUTDIR}/rootfs/home
 make -C ${FINDER_APP_DIR} clean
 make -C ${FINDER_APP_DIR} CROSS_COMPILE=${CROSS_COMPILE}
 cp ${FINDER_APP_DIR}/writer ${OUTDIR}/rootfs/home
