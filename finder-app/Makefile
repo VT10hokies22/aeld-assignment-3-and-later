@@ -2,11 +2,13 @@
 
 # if statement checking if cross_compile specified
 # Runs either local host compile or aarch
+
+
 ifeq ($(CROSS_COMPILE), aarch64-none-linux-gnu-)
 default: crosscompile
 else
 default: 
-	gcc writer.c -o writer
+	$(CC) writer.c -o writer
 endif
 
 # Removes the writer executable and object files
