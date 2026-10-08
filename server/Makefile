@@ -21,4 +21,4 @@ clean:
 
 # Compiles writer for aarch machine. Changed to get executable for assignment 3
 crosscompile:
-	$(CROSS_COMPILE)gcc aesdsocket.c -o aesdsocket
+	$(CC) aesdsocket.c -o aesdsocket
