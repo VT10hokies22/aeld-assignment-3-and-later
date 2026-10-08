@@ -1,0 +1,21 @@
+#!/bin/sh
+
+case "$1" in
+    start)
+        # Starts aesdsocket, daemon mode with -d
+        # -- -d to give that command to aesdsocket
+        echo "Starting aesdsocket"
+        start-stop-daemon -S -n aesdsocket -a /usr/bin/aesdsocket -- -d
+        ;;
+    stop)
+        # Stops the aesdsocket process
+        echo "Stopping aesdsocket"
+        start-stop-daemon -K -n aesdsocket
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+        ;;
+esac
+
+exit 0
